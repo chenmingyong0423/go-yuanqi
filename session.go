@@ -154,7 +154,7 @@ func (c *Session) StreamRequest(ctx context.Context) (<-chan *SessionResponse, <
 			}
 		}
 
-		if err := scanner.Err(); err != nil {
+		if err = scanner.Err(); err != nil {
 			errChan <- err
 			return
 		}
