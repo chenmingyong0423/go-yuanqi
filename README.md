@@ -38,7 +38,7 @@ session := chat.Chat().WithStream(false).WithChatType("published")
 
 // 创建消息内容
 // - 文字消息
-textContent := yuanqi.NewContentBuilder().Text("text").Build()
+textContent := yuanqi.NewContentBuilder().Text("你好").Build()
 // 图片消息
 imageContent := yuanqi.NewContentBuilder().FileUrl(yuanqi.NewFileBuilder().Type("image").Url("https://domain/1.jpg").Build()).Build()
 // 创建消息
@@ -60,7 +60,7 @@ session := chat.Chat().WithStream(true).WithChatType("published")
 
 // 创建消息内容
 // - 文字消息
-textContent := yuanqi.NewContentBuilder().Text("text").Build()
+textContent := yuanqi.NewContentBuilder().Text("你好").Build()
 // 图片消息
 imageContent := yuanqi.NewContentBuilder().FileUrl(yuanqi.NewFileBuilder().Type("image").Url("https://domain/1.jpg").Build()).Build()
 // 创建消息
