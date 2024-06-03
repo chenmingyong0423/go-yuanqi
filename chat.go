@@ -18,7 +18,7 @@ type Chat struct {
 	Timeout time.Duration // 会话请求超时时间，可选
 }
 
-func (c *Chat) Chat() *Session {
+func (c *Chat) Session() *Session {
 	return NewSession(c)
 }
 

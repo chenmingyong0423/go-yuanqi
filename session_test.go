@@ -101,7 +101,7 @@ func TestSession_Request(t *testing.T) {
 			chat := NewChat(tc.assistantId, tc.userId, tc.token)
 
 			// 创建新的会话对象并设置会话流和类型
-			session := chat.Chat().WithStream(tc.stream)
+			session := chat.Session().WithStream(tc.stream)
 
 			// 创建消息
 			messageBuilder := NewMessageBuilder()
@@ -126,7 +126,7 @@ func TestSession_StreamRequest(t *testing.T) {
 		// 400 参数错误
 		// 创建一个聊天对象
 		chat := NewChat("", "", "")
-		session := chat.Chat().WithStream(true)
+		session := chat.Session().WithStream(true)
 		respChan, errChan := session.StreamRequest(context.Background())
 		for {
 			select {
@@ -159,7 +159,7 @@ func TestSession_StreamRequest(t *testing.T) {
 		chat := NewChat(assistantId, userId, token)
 
 		// 创建新的会话对象并设置会话流和类型
-		session := chat.Chat().WithStream(true)
+		session := chat.Session().WithStream(true)
 
 		// 创建消息内容
 		textContent := NewContentBuilder().Text("text").Build()

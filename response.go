@@ -62,7 +62,7 @@ type Delta struct {
 }
 
 type HttpErrorResponse struct {
-	Status     string // e.g. "200 OK"
+	Status     string // e.g. "400 Bad Request"
 	StatusCode int    `json:"status_code"` // http 状态码
 	Body       []byte `json:"body"`        // http 响应体
 }
