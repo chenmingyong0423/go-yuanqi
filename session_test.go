@@ -122,47 +122,71 @@ func TestSession_Request(t *testing.T) {
 }
 
 func TestSession_StreamRequest(t *testing.T) {
-	//assistantId := os.Getenv("YUANQI_ASSISTANT_ID")
-	//
-	//userId := os.Getenv("YUANQI_USER_ID")
-	//
-	//token := os.Getenv("YUANQI_TOKEN")
-	//
-	//// 创建一个聊天对象
-	//chat := NewChat(assistantId, userId, token)
-	//
-	//// 创建新的会话对象并设置会话流和类型
-	//session := chat.Chat().WithStream(true)
-	//
-	//// 创建消息内容
-	//textContent := NewContentBuilder().Text("text").Build()
-	////imageContent := NewContentBuilder().FileUrl(NewFileBuilder().Type("image").Url("https://domain/1.jpg").Build()).Build()
-	//// 创建消息
-	//message := NewMessageBuilder().
-	//	Role("user").
-	//	Content(textContent).Build()
-	//// 添加消息并发送以及处理错误
-	//respChan, errChan := session.AddMessages(message).StreamRequest(context.Background())
-	//for {
-	//	select {
-	//	case resp, ok := <-respChan:
-	//		if !ok {
-	//			respChan = nil
-	//		} else {
-	//			// 处理流式响应
-	//			indent, err := jsoniter.MarshalIndent(resp, "", "  ")
-	//			assert.Nil(t, err)
-	//			fmt.Println(string(indent))
-	//		}
-	//	case err, ok := <-errChan:
-	//		if !ok {
-	//			errChan = nil
-	//		} else {
-	//			assert.Nil(t, err)
-	//		}
-	//	}
-	//	if respChan == nil && errChan == nil {
-	//		break
-	//	}
-	//}
+	{
+		// 400 参数错误
+		// 创建一个聊天对象
+		chat := NewChat("", "", "")
+		session := chat.Chat().WithStream(true)
+		respChan, errChan := session.StreamRequest(context.Background())
+		for {
+			select {
+			case resp, ok := <-respChan:
+				require.False(t, ok)
+				require.Nil(t, resp)
+				respChan = nil
+			case err, ok := <-errChan:
+				if !ok {
+					errChan = nil
+				} else {
+					resp := &HttpErrorResponse{}
+					require.True(t, errors.As(err, &resp))
+				}
+			}
+			if respChan == nil && errChan == nil {
+				break
+			}
+		}
+	}
+	{
+		// 正常请求
+		assistantId := os.Getenv("YUANQI_ASSISTANT_ID")
+
+		userId := os.Getenv("YUANQI_USER_ID")
+
+		token := os.Getenv("YUANQI_TOKEN")
+
+		// 创建一个聊天对象
+		chat := NewChat(assistantId, userId, token)
+
+		// 创建新的会话对象并设置会话流和类型
+		session := chat.Chat().WithStream(true)
+
+		// 创建消息内容
+		textContent := NewContentBuilder().Text("text").Build()
+		//imageContent := NewContentBuilder().FileUrl(NewFileBuilder().Type("image").Url("https://domain/1.jpg").Build()).Build()
+		// 创建消息
+		message := NewMessageBuilder().
+			Role("user").
+			Content(textContent).Build()
+		// 添加消息并发送以及处理错误
+		respChan, errChan := session.AddMessages(message).StreamRequest(context.Background())
+		for {
+			select {
+			case resp, ok := <-respChan:
+				if !ok {
+					respChan = nil
+				} else {
+					require.NotNil(t, resp)
+					require.NotZero(t, resp.ID)
+				}
+			case err, ok := <-errChan:
+				require.False(t, ok)
+				require.Nil(t, err)
+				errChan = nil
+			}
+			if respChan == nil && errChan == nil {
+				break
+			}
+		}
+	}
 }

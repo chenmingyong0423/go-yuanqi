@@ -84,7 +84,6 @@ func (c *Session) Request(ctx context.Context) (*SessionResponse, error) {
 			Body:       data,
 		}
 	}
-	fmt.Println(string(data))
 	if err = jsoniter.Unmarshal(data, &resp); err != nil {
 		return resp, err
 	}
