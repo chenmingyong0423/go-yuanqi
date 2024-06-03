@@ -90,3 +90,4 @@ for {
     }
 }
 ```
+流式 API 交互需要调用 `StreamRequest` 方法，该方法会返回一个 `chan SessionResponse` 对象和一个 `chan error` 对象。
