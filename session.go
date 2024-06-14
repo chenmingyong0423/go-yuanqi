@@ -35,6 +35,9 @@ type Session struct {
 	ChatType string `json:"chat_type"`
 	// 会话内容, 长度最多为40, 按对话时间从旧到新在数组中排列
 	Messages []Message `json:"messages"`
+
+	// 腾讯元器 API URL
+	url string
 }
 
 func NewSession(completion *Chat) *Session {
@@ -44,6 +47,7 @@ func NewSession(completion *Chat) *Session {
 		Token:            completion.Token,
 		AssistantVersion: completion.AssistantVersion,
 		Timeout:          completion.Timeout,
+		url:              url,
 	}
 }
 
@@ -106,7 +110,7 @@ func (c *Session) StreamRequest(ctx context.Context) (<-chan *SessionResponse, <
 			return
 		}
 
-		req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(body))
+		req, err := http.NewRequestWithContext(ctx, http.MethodPost, c.url, bytes.NewReader(body))
 		if err != nil {
 			errChan <- err
 			return
@@ -175,5 +179,10 @@ func (c *Session) WithChatType(chatType string) *Session {
 
 func (c *Session) AddMessages(messages ...Message) *Session {
 	c.Messages = append(c.Messages, messages...)
+	return c
+}
+
+func (c *Session) WithUrl(stream bool) *Session {
+	c.Stream = stream
 	return c
 }
