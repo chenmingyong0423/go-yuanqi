@@ -23,11 +23,11 @@ const (
 )
 
 type Session struct {
-	AssistantId      string        `json:"assistant_id" opt:"-"` // 助手ID
-	UserId           string        `json:"user_id" opt:"-"`      // 用户ID，调用者业务侧的用户ID，会影响智能体的数据统计，建议按实际情况填写
-	Token            string        `json:"token" opt:"-"`        // Token
-	AssistantVersion string        `json:"version,omitempty"`    // 助手版本 (仅对内部开放)，可选
-	Timeout          time.Duration `json:"-"`                    // 会话请求超时时间，可选
+	AssistantId      string        `json:"assistant_id"`      // 助手ID
+	UserId           string        `json:"user_id"`           // 用户ID，调用者业务侧的用户ID，会影响智能体的数据统计，建议按实际情况填写
+	Token            string        `json:"-"`                 // Token
+	AssistantVersion string        `json:"version,omitempty"` // 助手版本 (仅对内部开放)，可选
+	Timeout          time.Duration `json:"-"`                 // 会话请求超时时间，可选
 
 	// 是否以流式接口的形式返回数据，默认false，可选
 	Stream bool `json:"stream"`
@@ -146,7 +146,7 @@ func (c *Session) StreamRequest(ctx context.Context) (<-chan *SessionResponse, <
 					break
 				}
 				var resp SessionResponse
-				if err := jsoniter.UnmarshalFromString(data, &resp); err != nil {
+				if err = jsoniter.UnmarshalFromString(data, &resp); err != nil {
 					errChan <- err
 					return
 				}
@@ -154,7 +154,7 @@ func (c *Session) StreamRequest(ctx context.Context) (<-chan *SessionResponse, <
 			}
 		}
 
-		if err := scanner.Err(); err != nil {
+		if err = scanner.Err(); err != nil {
 			errChan <- err
 			return
 		}
