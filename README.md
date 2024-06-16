@@ -24,7 +24,7 @@
 # 入门指南
 ## 安装
 ```shell
-go get github.com/chenmingyong0423/go-mongox
+go get github.com/chenmingyong0423/go-yuanqi
 ```
 
 ## 使用
