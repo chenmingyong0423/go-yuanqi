@@ -34,7 +34,7 @@ go get github.com/chenmingyong0423/go-yuanqi
 chat := yuanqi.NewChat("assistantId", "userId", "token", yuanqi.WithAssistantVersion(""), yuanqi.WithTimeOut(10*time.Second))
 
 // 创建新的会话对象并设置会话流和类型
-session := chat.Chat().WithStream(false).WithChatType("published")
+session := chat.Session().WithStream(false).WithChatType("published")
 
 // 创建消息内容
 // - 文字消息
@@ -56,7 +56,7 @@ resp, err := session.AddMessages(message).Request(context.Background())
 chat := yuanqi.NewChat("assistantId", "userId", "token", yuanqi.WithAssistantVersion(""), yuanqi.WithTimeOut(10*time.Second))
 
 // 创建新的会话对象并设置会话流和类型
-session := chat.Chat().WithStream(true).WithChatType("published")
+session := chat.Session().WithStream(true).WithChatType("published")
 
 // 创建消息内容
 // - 文字消息
